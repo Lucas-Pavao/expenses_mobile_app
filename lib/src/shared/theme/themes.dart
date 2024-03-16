@@ -74,7 +74,7 @@ ThemeData get lighttheme => ThemeData(
         style: ButtonStyle(
           side: MaterialStateProperty.all<BorderSide>(
             BorderSide(
-              color: _lightColorScheme.secondary,
+              color: _lightColorScheme.primary,
             ),
           ),
           backgroundColor: MaterialStateProperty.all<Color>(
@@ -92,7 +92,7 @@ ThemeData get lighttheme => ThemeData(
             if (states.contains(MaterialState.selected)) {
               return _lightColorScheme.onSecondaryContainer;
             }
-            return _lightColorScheme.secondary;
+            return _lightColorScheme.primary;
           }),
           textStyle: MaterialStateProperty.resolveWith<TextStyle?>(
             (states) {
@@ -117,12 +117,12 @@ ThemeData get darktheme => ThemeData(
       useMaterial3: true,
       colorScheme: _darkColorScheme,
       appBarTheme: AppBarTheme(
-        backgroundColor: _darkColorScheme.surface,
+        backgroundColor: _darkColorScheme.background,
         titleTextStyle: TextStyle(
-            color: _darkColorScheme.secondary,
+            color: _darkColorScheme.primary,
             fontWeight: FontWeight.bold,
             fontSize: 20),
-        actionsIconTheme: IconThemeData(color: _darkColorScheme.secondary),
+        actionsIconTheme: IconThemeData(color: _darkColorScheme.primary),
         elevation: 1,
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
@@ -157,7 +157,7 @@ ThemeData get darktheme => ThemeData(
         ),
       ),
       inputDecorationTheme: InputDecorationTheme(
-        labelStyle: TextStyle(color: _darkColorScheme.secondary),
+        labelStyle: TextStyle(color: _darkColorScheme.primary),
         suffixIconColor: _darkColorScheme.secondaryContainer,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
@@ -191,7 +191,7 @@ ThemeData get darktheme => ThemeData(
         style: ButtonStyle(
           side: MaterialStateProperty.all<BorderSide>(
             BorderSide(
-              color: _darkColorScheme.secondary,
+              color: _darkColorScheme.primary,
             ),
           ),
           backgroundColor: MaterialStateProperty.all<Color>(
@@ -217,7 +217,7 @@ ThemeData get darktheme => ThemeData(
       ),
       floatingActionButtonTheme: FloatingActionButtonThemeData(
         backgroundColor: _darkColorScheme.secondaryContainer,
-        foregroundColor: _darkColorScheme.secondary,
+        foregroundColor: _darkColorScheme.primary,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(50),
         ),
@@ -225,7 +225,7 @@ ThemeData get darktheme => ThemeData(
       textButtonTheme: TextButtonThemeData(
         style: ButtonStyle(
           foregroundColor: MaterialStateProperty.all<Color>(
-            _darkColorScheme.secondary,
+            _darkColorScheme.primary,
           ),
         ),
       ),

@@ -1,4 +1,8 @@
+import 'package:expenses_mobile_app/src/pages/Home/controller/home_controller.dart';
+import 'package:expenses_mobile_app/src/pages/Home/widget/despesa_modal.dart';
+import 'package:expenses_mobile_app/src/pages/Home/widget/despesa_list_row.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -8,8 +12,21 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  HomeController? _controller;
+
+  _showExpensesDialog() {
+    showModalBottomSheet(
+      isScrollControlled: true,
+      context: context,
+      builder: (context) {
+        return const DespesaModal();
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    _controller = context.watch<HomeController>();
     return Scaffold(
       appBar: AppBar(
         title: const Padding(
@@ -39,7 +56,13 @@ class _HomeState extends State<Home> {
                   color: Theme.of(context).colorScheme.onPrimary,
                   boxShadow: [
                     BoxShadow(
-                      color: const Color(0x00000000).withOpacity(1),
+                      color: Theme.of(context).colorScheme.brightness ==
+                              Brightness.light
+                          ? const Color.fromARGB(28, 0, 0, 0)
+                          : Theme.of(context)
+                              .colorScheme
+                              .primary
+                              .withOpacity(0.1),
                       offset: const Offset(0, 5),
                       blurRadius: 7,
                       spreadRadius: 0,
@@ -51,27 +74,39 @@ class _HomeState extends State<Home> {
                   children: [
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           'Saldo',
-                          style: Theme.of(context).textTheme.bodyLarge,
+                          style: Theme.of(context).textTheme.bodyMedium,
                         ),
                         Text(
-                          'R\$ 1000,00',
-                          style: Theme.of(context).textTheme.bodyLarge,
+                          'R\$ ${_controller?.saldo}',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
                         ),
                       ],
                     ),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           'Despesas',
-                          style: Theme.of(context).textTheme.bodyLarge,
+                          style: Theme.of(context).textTheme.bodyMedium,
                         ),
                         Text(
-                          'R\$ 1000,00',
-                          style: Theme.of(context).textTheme.bodyLarge,
+                          'R\$ ${_controller?.despesas}',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: _controller!.despesas < 0
+                                ? Theme.of(context).colorScheme.error
+                                : Theme.of(context).colorScheme.primary,
+                          ),
                         ),
                       ],
                     ),
@@ -89,14 +124,27 @@ class _HomeState extends State<Home> {
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   TextButton.icon(
-                    onPressed: () {},
+                    onPressed: () {
+                      _showExpensesDialog();
+                    },
                     icon: const Icon(Icons.add),
                     label: const Text("Adicionar"),
                   ),
                 ],
               ),
-            )
+            ),
+
             /*List View com as despesas*/
+            Expanded(
+              // Adicionado para permitir que a ListView ocupe o espaço restante
+              child: ListView.builder(
+                itemCount: _controller?.dispesaLista.length ?? 0,
+                itemBuilder: (context, index) {
+                  final despesa = _controller?.dispesaLista[index];
+                  return DespesaListRow(dispesa: despesa);
+                },
+              ),
+            ),
           ],
         ),
       ),
