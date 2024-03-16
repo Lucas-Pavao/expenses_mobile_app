@@ -18,8 +18,15 @@ class _HomeState extends State<Home> {
     showModalBottomSheet(
       isScrollControlled: true,
       context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(24),
+        ),
+      ),
       builder: (context) {
-        return const DespesaModal();
+        return DespesaModal(
+          onAdd: _controller!.addDispesa,
+        );
       },
     );
   }
@@ -126,6 +133,7 @@ class _HomeState extends State<Home> {
                   TextButton.icon(
                     onPressed: () {
                       _showExpensesDialog();
+                      // _controller.addDispesa();
                     },
                     icon: const Icon(Icons.add),
                     label: const Text("Adicionar"),
@@ -141,7 +149,10 @@ class _HomeState extends State<Home> {
                 itemCount: _controller?.dispesaLista.length ?? 0,
                 itemBuilder: (context, index) {
                   final despesa = _controller?.dispesaLista[index];
-                  return DespesaListRow(dispesa: despesa);
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: DespesaListRow(despesa: despesa),
+                  );
                 },
               ),
             ),
