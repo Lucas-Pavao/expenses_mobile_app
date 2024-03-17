@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class DespesaModal extends StatefulWidget {
-  const DespesaModal({Key? key, required this.onAdd}) : super(key: key);
+  const DespesaModal({super.key, required this.onAdd});
   final Function? onAdd;
 
   @override

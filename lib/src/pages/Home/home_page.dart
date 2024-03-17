@@ -13,6 +13,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   HomeController? _controller;
+  int _selectedDespesa = 0;
 
   _showExpensesDialog() {
     showModalBottomSheet(
@@ -31,9 +32,63 @@ class _HomeState extends State<Home> {
     );
   }
 
+  _showBalanceDialog() {
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: const Text('Adicionar Saldo'),
+              content: TextField(
+                controller: _controller!.saldoController,
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(
+                  labelText: 'Saldo',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    _controller!.addSaldo();
+                    Navigator.pop(context);
+                  },
+                  child: const Text('Adicionar'),
+                ),
+              ],
+            ));
+  }
+
+  _OnDespesaLongPress(int index) {
+    setState(() {
+      _selectedDespesa = index;
+    });
+
+    // Show SnackBar and listen for it to close
+    ScaffoldMessenger.of(context)
+        .showSnackBar(
+          SnackBar(
+            content: const Text('Você deseja excluir esta residência?'),
+            action: SnackBarAction(
+              label: 'Excluir',
+              onPressed: () {
+                _controller?.deleteDespesa(index);
+                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+              },
+            ),
+          ),
+        )
+        .closed
+        .then((reason) {
+      // Reset the selection when SnackBar closes
+      setState(() {
+        _selectedDespesa = -1;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     _controller = context.watch<HomeController>();
+
     return Scaffold(
       appBar: AppBar(
         title: const Padding(
@@ -47,6 +102,12 @@ class _HomeState extends State<Home> {
           IconButton(
             onPressed: () {},
             icon: const Icon(Icons.show_chart),
+          ),
+          IconButton(
+            onPressed: () {
+              _showBalanceDialog();
+            },
+            icon: Icon(_controller!.saldo <= 0 ? Icons.add : Icons.edit),
           ),
         ],
       ),
@@ -88,7 +149,7 @@ class _HomeState extends State<Home> {
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
                         Text(
-                          'R\$ ${_controller?.saldo}',
+                          'R\$ ${_controller?.saldo.toStringAsFixed(2)}',
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -106,7 +167,7 @@ class _HomeState extends State<Home> {
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
                         Text(
-                          'R\$ ${_controller?.despesas}',
+                          'R\$ ${_controller?.despesas.toStringAsFixed(2)}',
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -151,7 +212,11 @@ class _HomeState extends State<Home> {
                   final despesa = _controller?.dispesaLista[index];
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: DespesaListRow(despesa: despesa),
+                    child: DespesaListRow(
+                      despesa: despesa,
+                      onLongPress: () => _OnDespesaLongPress(index),
+                      isSelected: index == _selectedDespesa,
+                    ),
                   );
                 },
               ),

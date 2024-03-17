@@ -3,23 +3,29 @@ import 'package:flutter/material.dart';
 
 class HomeController extends ChangeNotifier {
   double saldo = 0;
-  double despesas = 100;
+  double despesas = 0;
   List<Dispesa> dispesaLista = [];
+  TextEditingController saldoController = TextEditingController();
 
   void addDispesa(Dispesa dispesa) {
     dispesaLista.add(dispesa);
+    _atualizaDespesas();
     notifyListeners();
   }
 
-  // bool virifcaDespesas() {
-  //   if (despesas < 0) {
-  //     print('Despesas negativas');
-  //     notifyListeners();
-  //     return true;
-  //   } else {
-  //     print('Despesas positivas');
-  //     notifyListeners();
-  //     return false;
-  //   }
-  // }
+  void addSaldo() {
+    saldo = double.parse(saldoController.text);
+    _atualizaDespesas();
+    notifyListeners();
+  }
+
+  _atualizaDespesas() {
+    despesas = saldo;
+    for (var dispesa in dispesaLista) {
+      despesas += dispesa.valor;
+    }
+    notifyListeners();
+  }
+
+  void deleteDespesa(int index) {}
 }
