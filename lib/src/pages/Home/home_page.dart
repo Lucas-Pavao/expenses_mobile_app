@@ -13,7 +13,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   HomeController? _controller;
-  int _selectedDespesa = 0;
+  int _selectedDespesa = -1;
 
   _showExpensesDialog() {
     showModalBottomSheet(
@@ -57,7 +57,7 @@ class _HomeState extends State<Home> {
             ));
   }
 
-  _OnDespesaLongPress(int index) {
+  _onDespesaLongPress(int index) {
     setState(() {
       _selectedDespesa = index;
     });
@@ -86,6 +86,13 @@ class _HomeState extends State<Home> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _controller = context.read<HomeController>();
+    _controller!.loadDespesas();
+  }
+
+  @override
   Widget build(BuildContext context) {
     _controller = context.watch<HomeController>();
 
@@ -99,10 +106,10 @@ class _HomeState extends State<Home> {
         ),
         toolbarHeight: 40,
         actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.show_chart),
-          ),
+          // IconButton(
+          //   onPressed: () {},
+          //   icon: const Icon(Icons.show_chart),
+          // ),
           IconButton(
             onPressed: () {
               _showBalanceDialog();
@@ -214,7 +221,7 @@ class _HomeState extends State<Home> {
                     padding: const EdgeInsets.all(8.0),
                     child: DespesaListRow(
                       despesa: despesa,
-                      onLongPress: () => _OnDespesaLongPress(index),
+                      onLongPress: () => _onDespesaLongPress(index),
                       isSelected: index == _selectedDespesa,
                     ),
                   );

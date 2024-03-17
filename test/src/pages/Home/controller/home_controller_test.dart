@@ -1,0 +1,60 @@
+import 'package:expenses_mobile_app/src/pages/Home/controller/home_controller.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:expenses_mobile_app/src/shared/model/dispesa_model.dart';
+
+void main() {
+  group('HomeController', () {
+    setUpAll(() async {
+      WidgetsFlutterBinding.ensureInitialized();
+    });
+
+    test('Adding expense updates total expenses correctly', () {
+      final controller = HomeController();
+      final initialExpenses = controller.despesas;
+
+      // Add an expense
+      final expense = Dispesa(
+          valor: 50.0,
+          nome: 'Teste',
+          icon: Icons.ac_unit,
+          iconColor: Colors.blue,
+          data: '2021-10-10');
+      controller.addDispesa(expense);
+
+      // Verify that the expenses have been updated correctly
+      expect(controller.despesas, equals(initialExpenses + expense.valor));
+    });
+
+    test('Deleting expense updates total expenses correctly', () {
+      final controller = HomeController();
+      final initialExpenses = controller.despesas;
+      final expense = Dispesa(
+          valor: 50.0,
+          nome: 'Teste',
+          icon: Icons.ac_unit,
+          iconColor: Colors.blue,
+          data: '2021-10-10');
+      controller.addDispesa(expense);
+
+      // Delete the added expense
+      controller.deleteDespesa(0);
+
+      // Verify that the expenses have been updated correctly
+      expect(controller.despesas, equals(initialExpenses));
+    });
+
+    test('Adding balance updates total balance and expenses correctly', () {
+      final controller = HomeController();
+      final initialExpenses = controller.despesas;
+
+      // Add a balance
+      controller.saldoController.text = '100.0';
+      controller.addSaldo();
+
+      // Verify that the balance and expenses have been updated correctly
+      expect(controller.saldo, equals(100.0));
+      expect(controller.despesas, equals(initialExpenses + 100.0));
+    });
+  });
+}
