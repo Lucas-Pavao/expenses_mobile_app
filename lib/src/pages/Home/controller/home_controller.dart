@@ -1,50 +1,58 @@
 import 'package:expenses_mobile_app/src/shared/Services/pref_service.dart';
-import 'package:expenses_mobile_app/src/shared/model/dispesa_model.dart';
+import 'package:expenses_mobile_app/src/shared/model/extrato_model.dart';
 import 'package:flutter/material.dart';
 
 class HomeController extends ChangeNotifier {
-  double saldo = 0;
-  double despesas = 0;
-  List<Dispesa> dispesaLista = [];
+  double saldoInicial = 0;
+  double saldoDisponivel = 0;
+  List<Extrato> extratoLista = [];
   TextEditingController saldoController = TextEditingController();
 
-  void addDispesa(Dispesa dispesa) {
-    dispesaLista.add(dispesa);
-    _atualizaDespesas();
+  void addExtrato(Extrato saldoDisponivel) {
+    extratoLista.add(saldoDisponivel);
+    _atualizaExtratos();
     notifyListeners();
   }
 
   void addSaldo() {
-    saldo = double.parse(saldoController.text);
-    _atualizaDespesas();
+    saldoInicial = double.parse(saldoController.text);
+    _atualizaExtratos();
     notifyListeners();
   }
 
-  _atualizaDespesas() {
-    despesas = saldo;
-    for (var dispesa in dispesaLista) {
-      despesas += dispesa.valor;
+  _atualizaExtratos() {
+    saldoDisponivel = saldoInicial;
+    for (var e in extratoLista) {
+      saldoDisponivel += e.valor;
     }
     PrefService.save(
-      saldo: saldo,
-      despesa: despesas,
-      listaDispesa: dispesaLista,
+      saldoInicial: saldoInicial,
+      saldoDisponivel: saldoDisponivel,
+      listaExtrato: extratoLista,
     );
     notifyListeners();
   }
 
-  void deleteDespesa(int index) {
-    dispesaLista.removeAt(index);
-    _atualizaDespesas();
+  void deleteExtrato(int index) {
+    extratoLista.removeAt(index);
+    _atualizaExtratos();
     notifyListeners();
   }
 
-  void loadDespesas() async {
+  void loadExtratos() async {
     var data = await PrefService.read();
-    saldo = data['saldo'] ?? 0;
-    despesas = data['despesa'] ?? 0;
-    var lista = data['listaDespesa'] ?? [];
-    dispesaLista = lista.map<Dispesa>((e) => Dispesa.fromJson(e)).toList();
+    saldoInicial = data['saldoInicial'] ?? 0;
+    saldoDisponivel = data['Extrato'] ?? 0;
+    var lista = data['listaExtrato'] ?? [];
+    extratoLista = lista.map<Extrato>((e) => Extrato.fromJson(e)).toList();
+    notifyListeners();
+  }
+
+  void finalizarMes() {
+    saldoInicial = 0;
+    saldoDisponivel = 0;
+    extratoLista = [];
+    _atualizaExtratos();
     notifyListeners();
   }
 }

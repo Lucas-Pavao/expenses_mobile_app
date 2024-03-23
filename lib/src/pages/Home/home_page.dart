@@ -1,6 +1,6 @@
 import 'package:expenses_mobile_app/src/pages/Home/controller/home_controller.dart';
-import 'package:expenses_mobile_app/src/pages/Home/widget/despesa_modal.dart';
-import 'package:expenses_mobile_app/src/pages/Home/widget/despesa_list_row.dart';
+import 'package:expenses_mobile_app/src/pages/Home/widget/extrato_list_row.dart';
+import 'package:expenses_mobile_app/src/pages/Home/widget/extrato_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -13,7 +13,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   HomeController? _controller;
-  int _selectedDespesa = -1;
+  int _selectedExtrato = -1;
 
   _showExpensesDialog() {
     showModalBottomSheet(
@@ -25,8 +25,8 @@ class _HomeState extends State<Home> {
         ),
       ),
       builder: (context) {
-        return DespesaModal(
-          onAdd: _controller!.addDispesa,
+        return ExtratoModal(
+          onAdd: _controller!.addExtrato,
         );
       },
     );
@@ -57,9 +57,32 @@ class _HomeState extends State<Home> {
             ));
   }
 
-  _onDespesaLongPress(int index) {
+  _showFinalizarMesDialog() {
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: const Text('Finalizar Mês'),
+              content: const Text(
+                  ''' Isso irá zerar o saldo disponível, saldo Inicial e o extrato!.'''),
+              icon: Icon(
+                Icons.warning_rounded,
+                color: Theme.of(context).colorScheme.error,
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    _controller!.finalizarMes();
+                    Navigator.popAndPushNamed(context, '/home');
+                  },
+                  child: const Text('Finalizar'),
+                ),
+              ],
+            ));
+  }
+
+  _onExtratoLongPress(int index) {
     setState(() {
-      _selectedDespesa = index;
+      _selectedExtrato = index;
     });
 
     // Show SnackBar and listen for it to close
@@ -70,7 +93,7 @@ class _HomeState extends State<Home> {
             action: SnackBarAction(
               label: 'Excluir',
               onPressed: () {
-                _controller?.deleteDespesa(index);
+                _controller?.deleteExtrato(index);
                 ScaffoldMessenger.of(context).hideCurrentSnackBar();
               },
             ),
@@ -80,7 +103,7 @@ class _HomeState extends State<Home> {
         .then((reason) {
       // Reset the selection when SnackBar closes
       setState(() {
-        _selectedDespesa = -1;
+        _selectedExtrato = -1;
       });
     });
   }
@@ -89,7 +112,7 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     _controller = context.read<HomeController>();
-    _controller!.loadDespesas();
+    _controller!.loadExtratos();
   }
 
   @override
@@ -97,6 +120,41 @@ class _HomeState extends State<Home> {
     _controller = context.watch<HomeController>();
 
     return Scaffold(
+      drawer: Drawer(
+        child: ListView(
+          children: [
+            ListTile(
+              title: Text('Estatisticas',
+                  style: Theme.of(context).textTheme.bodyLarge),
+              leading: Icon(
+                Icons.show_chart,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              onTap: () {},
+            ),
+            ListTile(
+              title: Text('Gerar Relatório',
+                  style: Theme.of(context).textTheme.bodyLarge),
+              leading: Icon(
+                Icons.table_chart_rounded,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              onTap: () {},
+            ),
+            ListTile(
+              title: Text('Finalizar Mês',
+                  style: Theme.of(context).textTheme.bodyLarge),
+              leading: Icon(
+                Icons.calendar_today_rounded,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              onTap: () {
+                _showFinalizarMesDialog();
+              },
+            ),
+          ],
+        ),
+      ),
       appBar: AppBar(
         title: const Padding(
           padding: EdgeInsets.all(8.0),
@@ -114,7 +172,7 @@ class _HomeState extends State<Home> {
             onPressed: () {
               _showBalanceDialog();
             },
-            icon: Icon(_controller!.saldo <= 0 ? Icons.add : Icons.edit),
+            icon: Icon(_controller!.saldoInicial <= 0 ? Icons.add : Icons.edit),
           ),
         ],
       ),
@@ -152,11 +210,11 @@ class _HomeState extends State<Home> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Saldo',
+                          'Saldo Inicial',
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
                         Text(
-                          'R\$ ${_controller?.saldo.toStringAsFixed(2)}',
+                          'R\$ ${_controller?.saldoInicial.toStringAsFixed(2)}',
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -170,15 +228,15 @@ class _HomeState extends State<Home> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Despesas',
+                          'Saldo Disponível',
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
                         Text(
-                          'R\$ ${_controller?.despesas.toStringAsFixed(2)}',
+                          'R\$ ${_controller?.saldoDisponivel.toStringAsFixed(2)}',
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
-                            color: _controller!.despesas < 0
+                            color: _controller!.saldoDisponivel < 0
                                 ? Theme.of(context).colorScheme.error
                                 : Theme.of(context).colorScheme.primary,
                           ),
@@ -195,13 +253,13 @@ class _HomeState extends State<Home> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Suas Despesas:',
+                    'Seu Extrato:',
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   TextButton.icon(
                     onPressed: () {
                       _showExpensesDialog();
-                      // _controller.addDispesa();
+                      // _controller.addExtrato();
                     },
                     icon: const Icon(Icons.add),
                     label: const Text("Adicionar"),
@@ -210,19 +268,19 @@ class _HomeState extends State<Home> {
               ),
             ),
 
-            /*List View com as despesas*/
+            /*List View com as Extratos*/
             Expanded(
               // Adicionado para permitir que a ListView ocupe o espaço restante
               child: ListView.builder(
-                itemCount: _controller?.dispesaLista.length ?? 0,
+                itemCount: _controller?.extratoLista.length ?? 0,
                 itemBuilder: (context, index) {
-                  final despesa = _controller?.dispesaLista[index];
+                  final extrato = _controller?.extratoLista[index];
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: DespesaListRow(
-                      despesa: despesa,
-                      onLongPress: () => _onDespesaLongPress(index),
-                      isSelected: index == _selectedDespesa,
+                    child: ExtratoListRow(
+                      extrato: extrato,
+                      onLongPress: () => _onExtratoLongPress(index),
+                      isSelected: index == _selectedExtrato,
                     ),
                   );
                 },

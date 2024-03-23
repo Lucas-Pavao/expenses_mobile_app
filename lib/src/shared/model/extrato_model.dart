@@ -1,16 +1,15 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
-class Dispesa {
+class Extrato {
   final IconData icon;
   final Color iconColor;
   final String nome;
   final double valor;
   final String data;
 
-  Dispesa({
+  Extrato({
     required this.icon,
     required this.iconColor,
     required this.nome,
@@ -28,8 +27,8 @@ class Dispesa {
     };
   }
 
-  factory Dispesa.fromMap(Map<String, dynamic> map) {
-    return Dispesa(
+  factory Extrato.fromMap(Map<String, dynamic> map) {
+    return Extrato(
       icon: IconData(map['icon'] as int, fontFamily: 'MaterialIcons'),
       iconColor: Color(map['iconColor'] as int),
       nome: map['nome'] as String,
@@ -40,6 +39,6 @@ class Dispesa {
 
   String toJson() => json.encode(toMap());
 
-  factory Dispesa.fromJson(String source) =>
-      Dispesa.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory Extrato.fromJson(String source) =>
+      Extrato.fromMap(json.decode(source) as Map<String, dynamic>);
 }

@@ -1,19 +1,21 @@
 import 'dart:convert';
-import 'package:expenses_mobile_app/src/shared/model/dispesa_model.dart';
+import 'package:expenses_mobile_app/src/shared/model/extrato_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PrefService {
   static const String _key = 'key';
 
   static save(
-      {double? saldo, double? despesa, List<Dispesa>? listaDispesa}) async {
+      {double? saldoInicial,
+      double? saldoDisponivel,
+      List<Extrato>? listaExtrato}) async {
     var prefs = await SharedPreferences.getInstance();
     prefs.setString(
       _key,
       jsonEncode({
-        'saldo': saldo,
-        'despesa': despesa,
-        'listaDespesa': listaDispesa,
+        'saldoInicial': saldoInicial,
+        'saldoDisponivel': saldoDisponivel,
+        'listaExtrato': listaExtrato,
       }),
     );
   }

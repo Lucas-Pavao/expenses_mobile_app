@@ -1,14 +1,14 @@
-import 'package:expenses_mobile_app/src/shared/model/dispesa_model.dart';
+import 'package:expenses_mobile_app/src/shared/model/extrato_model.dart';
 import 'package:flutter/material.dart';
 
-class DespesaListRow extends StatelessWidget {
-  const DespesaListRow(
+class ExtratoListRow extends StatelessWidget {
+  const ExtratoListRow(
       {super.key,
-      required this.despesa,
+      required this.extrato,
       required this.isSelected,
       this.onLongPress});
 
-  final Dispesa? despesa;
+  final Extrato? extrato;
   final bool isSelected;
   final void Function()? onLongPress;
 
@@ -45,11 +45,11 @@ class DespesaListRow extends StatelessWidget {
                     width: 50,
                     height: 50,
                     decoration: BoxDecoration(
-                      color: despesa!.iconColor,
+                      color: extrato!.iconColor,
                       borderRadius: BorderRadiusDirectional.circular(100),
                     ),
                     child: Center(
-                      child: Icon(despesa!.icon,
+                      child: Icon(extrato!.icon,
                           color: Theme.of(context).colorScheme.background),
                     ),
                   ),
@@ -61,7 +61,7 @@ class DespesaListRow extends StatelessWidget {
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.40,
                         child: Text(
-                          despesa!.nome,
+                          extrato!.nome,
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
                             fontSize: 16,
@@ -70,7 +70,7 @@ class DespesaListRow extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        despesa!.data.toString(),
+                        extrato!.data.toString(),
                         style: const TextStyle(
                           fontSize: 14,
                         ),
@@ -82,11 +82,11 @@ class DespesaListRow extends StatelessWidget {
               Row(
                 children: [
                   Icon(
-                    despesa!.valor > 0 ? Icons.add : Icons.remove,
-                    color: despesa!.valor > 0 ? Colors.green : Colors.red,
+                    extrato!.valor > 0 ? Icons.add : Icons.remove,
+                    color: extrato!.valor > 0 ? Colors.green : Colors.red,
                   ),
                   Text(
-                    despesa!.valor
+                    extrato!.valor
                         .toStringAsFixed(2)
                         .replaceFirstMapped("-", (match) => ""),
                     overflow: TextOverflow.ellipsis,
@@ -94,7 +94,7 @@ class DespesaListRow extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      color: despesa!.valor > 0 ? Colors.green : Colors.red,
+                      color: extrato!.valor > 0 ? Colors.green : Colors.red,
                     ),
                   ),
                 ],

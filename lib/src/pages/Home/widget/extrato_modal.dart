@@ -1,16 +1,16 @@
-import 'package:expenses_mobile_app/src/shared/model/dispesa_model.dart';
+import 'package:expenses_mobile_app/src/shared/model/extrato_model.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class DespesaModal extends StatefulWidget {
-  const DespesaModal({super.key, required this.onAdd});
+class ExtratoModal extends StatefulWidget {
+  const ExtratoModal({super.key, required this.onAdd});
   final Function? onAdd;
 
   @override
-  State<DespesaModal> createState() => _DespesaModalState();
+  State<ExtratoModal> createState() => _ExtratoModalState();
 }
 
-class _DespesaModalState extends State<DespesaModal> {
+class _ExtratoModalState extends State<ExtratoModal> {
   DateTime _selectedDate = DateTime.now();
   bool isAdding = true;
 
@@ -80,7 +80,7 @@ class _DespesaModalState extends State<DespesaModal> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
-                        'Adicionar Despesa',
+                        'Adicionar Valor',
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -217,14 +217,14 @@ class _DespesaModalState extends State<DespesaModal> {
                               valor *= -1;
                             }
 
-                            Dispesa despesa = Dispesa(
+                            Extrato extrato = Extrato(
                               nome: _nomeController.text,
                               data: dateFormat.format(_selectedDate),
                               valor: valor,
                               icon: icon,
                               iconColor: color,
                             );
-                            widget.onAdd!(despesa);
+                            widget.onAdd!(extrato);
                             Navigator.pop(context);
                           }
                         },
