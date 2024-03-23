@@ -130,7 +130,9 @@ class _HomeState extends State<Home> {
                 Icons.show_chart,
                 color: Theme.of(context).colorScheme.primary,
               ),
-              onTap: () {},
+              onTap: () {
+                Navigator.pushNamed(context, '/estatisticas');
+              },
             ),
             ListTile(
               title: Text('Gerar Relatório',
