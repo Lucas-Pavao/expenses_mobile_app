@@ -131,7 +131,11 @@ class _HomeState extends State<Home> {
                 color: Theme.of(context).colorScheme.primary,
               ),
               onTap: () {
-                Navigator.pushNamed(context, '/estatisticas');
+                Navigator.pushNamed(context, '/estatisticas', arguments: {
+                  'saldoInicial': _controller!.saldoInicial,
+                  'saldoDisponivel': _controller!.saldoDisponivel,
+                  'extratoLista': _controller!.extratoLista,
+                });
               },
             ),
             ListTile(

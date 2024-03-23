@@ -42,7 +42,7 @@ class HomeController extends ChangeNotifier {
   void loadExtratos() async {
     var data = await PrefService.read();
     saldoInicial = data['saldoInicial'] ?? 0;
-    saldoDisponivel = data['Extrato'] ?? 0;
+    saldoDisponivel = data['saldoDisponivel'] ?? 0;
     var lista = data['listaExtrato'] ?? [];
     extratoLista = lista.map<Extrato>((e) => Extrato.fromJson(e)).toList();
     notifyListeners();

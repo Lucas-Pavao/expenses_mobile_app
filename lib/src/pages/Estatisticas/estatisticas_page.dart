@@ -1,6 +1,7 @@
 import 'package:expenses_mobile_app/src/pages/Estatisticas/despesas_x_lucro_chart_page.dart';
 import 'package:expenses_mobile_app/src/pages/Estatisticas/extrato_mensal_chart_page.dart';
 import 'package:expenses_mobile_app/src/pages/Estatisticas/saldo_disponivel_chart_page.dart';
+import 'package:expenses_mobile_app/src/shared/model/extrato_model.dart';
 import 'package:flutter/material.dart';
 
 class Estatisticas extends StatefulWidget {
@@ -13,8 +14,16 @@ class Estatisticas extends StatefulWidget {
 class _EstatisticasState extends State<Estatisticas> {
   int buttonSelected = 0;
   PageController pageController = PageController(initialPage: 0);
+
   @override
   Widget build(BuildContext context) {
+    final Map<String, dynamic> arguments =
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+
+    final double saldoInicial = arguments['saldoInicial'];
+    final double saldoDisponivel = arguments['saldoDisponivel'];
+    final List<Extrato> extratoLista = arguments['extratoLista'];
+
     return Scaffold(
         appBar: AppBar(
             title: const Text('Estatísticas'),
@@ -50,10 +59,16 @@ class _EstatisticasState extends State<Estatisticas> {
             Expanded(
               child: PageView(
                 controller: pageController,
-                children: const [
-                  SaldoDisponivelChart(),
+                children: [
+                  SaldoDisponivelChart(
+                      extratoLista: extratoLista,
+                      saldoDisponivel: saldoDisponivel,
+                      saldoInicial: saldoInicial),
                   ExtratoMensalChart(),
-                  DespesaXLucroChart(),
+                  DespesaXLucroChart(
+                      extratoLista: extratoLista,
+                      saldoDisponivel: saldoDisponivel,
+                      saldoInicial: saldoInicial),
                 ],
               ),
             )
