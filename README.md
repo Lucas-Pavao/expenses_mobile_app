@@ -36,7 +36,6 @@ Para executar o aplicativo em um emulador ou dispositivo físico, siga estas eta
     flutter run
     ```
 
-## Capturas de Tela
 
-*Em breve*
+https://github.com/Lucas-Pavao/expenses_mobile_app/assets/89342683/86ef68d0-3045-492c-ba37-bd5c4c8860b6
 
