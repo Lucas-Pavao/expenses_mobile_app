@@ -15,11 +15,13 @@ void main() {
 
       // Add an expense
       final expense = Extrato(
-          valor: 50.0,
-          nome: 'Teste',
-          icon: Icons.ac_unit,
-          iconColor: Colors.blue,
-          data: '2021-10-10');
+        valor: 50.0,
+        nome: 'Teste',
+        icon: Icons.ac_unit,
+        iconColor: Colors.blue,
+        data: '2021-10-10',
+        diaSemana: "Segunda-feira",
+      );
       controller.addExtrato(expense);
 
       // Verify that the expenses have been updated correctly
@@ -31,11 +33,13 @@ void main() {
       final controller = HomeController();
       final initialExpenses = controller.saldoDisponivel;
       final expense = Extrato(
-          valor: 50.0,
-          nome: 'Teste',
-          icon: Icons.ac_unit,
-          iconColor: Colors.blue,
-          data: '2021-10-10');
+        valor: 50.0,
+        nome: 'Teste',
+        icon: Icons.ac_unit,
+        iconColor: Colors.blue,
+        data: '2021-10-10',
+        diaSemana: "Segunda-feira",
+      );
       controller.addExtrato(expense);
 
       // Delete the added expense

@@ -1,7 +1,6 @@
 import 'package:expenses_mobile_app/src/pages/Estatisticas/widgets/chart_list_row.dart';
 import 'package:expenses_mobile_app/src/shared/model/extrato_model.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -23,6 +22,20 @@ class DespesaXLucroChart extends StatefulWidget {
 class _DespesaXLucroChartState extends State<DespesaXLucroChart> {
   List<Extrato> despesas = [];
   List<Extrato> lucros = [];
+  bool isShowingMainData = false;
+  double saldoOpacity = 0.0;
+
+  @override
+  void initState() {
+    super.initState();
+    // Move a chamada para a função _loadDespesaXLucroData para dentro de initState
+    Future.delayed(const Duration(milliseconds: 50)).then((value) {
+      setState(() {
+        isShowingMainData = true;
+        saldoOpacity = 1.0;
+      });
+    });
+  }
 
   List<PieChartSectionData> _loadDespesaXLucroData(List<Extrato> extratoLista) {
     final List<PieChartSectionData> sections = [];
@@ -83,7 +96,7 @@ class _DespesaXLucroChartState extends State<DespesaXLucroChart> {
       ),
     );
 
-    return sections;
+    return isShowingMainData ? sections : [];
   }
 
   @override
@@ -99,25 +112,31 @@ class _DespesaXLucroChartState extends State<DespesaXLucroChart> {
                 AspectRatio(
                   aspectRatio: 1,
                   child: PieChart(
+                    swapAnimationCurve: Curves.linear,
+                    swapAnimationDuration: const Duration(milliseconds: 300),
                     PieChartData(
-                      sectionsSpace: 5,
-                      centerSpaceRadius: 110,
+                      sectionsSpace: isShowingMainData ? 5 : 0,
+                      centerSpaceRadius: isShowingMainData ? 110 : 0,
                       sections: _loadDespesaXLucroData(widget.extratoLista),
                     ),
                   ),
                 ),
-                Column(
-                  children: [
-                    Text('Saldo Disponivel',
-                        style: Theme.of(context).textTheme.bodySmall),
-                    Text(
-                      'R\$ ${widget.saldoDisponivel.toStringAsFixed(2)}',
-                      style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Theme.of(context).primaryColor),
-                    ),
-                  ],
+                AnimatedOpacity(
+                  duration: const Duration(milliseconds: 1000),
+                  opacity: saldoOpacity,
+                  child: Column(
+                    children: [
+                      Text('Saldo Disponivel',
+                          style: Theme.of(context).textTheme.bodySmall),
+                      Text(
+                        'R\$ ${widget.saldoDisponivel.toStringAsFixed(2)}',
+                        style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).colorScheme.primary),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -129,7 +148,7 @@ class _DespesaXLucroChartState extends State<DespesaXLucroChart> {
                     Text('Despesas',
                         style: Theme.of(context).textTheme.bodyMedium),
                     Text(
-                      'R\$ ${widget.extratoLista.where((element) => element.valor < 0).map((e) => e.valor).reduce((value, element) => value + element).abs().toStringAsFixed(2)}',
+                      'R\$ -${widget.extratoLista.where((element) => element.valor < 0).map((e) => e.valor).reduce((value, element) => value + element).abs().toStringAsFixed(2)}',
                       style: const TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
@@ -155,7 +174,7 @@ class _DespesaXLucroChartState extends State<DespesaXLucroChart> {
                     Text('Lucros',
                         style: Theme.of(context).textTheme.bodyMedium),
                     Text(
-                      'R\$ ${widget.extratoLista.where((element) => element.valor > 0).map((e) => e.valor).reduce((value, element) => value + element).abs().toStringAsFixed(2)}',
+                      'R\$ +${widget.extratoLista.where((element) => element.valor > 0).map((e) => e.valor).reduce((value, element) => value + element).abs().toStringAsFixed(2)}',
                       style: const TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,

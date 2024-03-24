@@ -8,6 +8,7 @@ class Extrato {
   final String nome;
   final double valor;
   final String data;
+  final String diaSemana;
 
   Extrato({
     required this.icon,
@@ -15,6 +16,7 @@ class Extrato {
     required this.nome,
     required this.valor,
     required this.data,
+    required this.diaSemana,
   });
 
   Map<String, dynamic> toMap() {
@@ -24,6 +26,7 @@ class Extrato {
       'nome': nome,
       'valor': valor,
       'data': data,
+      'diaSemana': diaSemana,
     };
   }
 
@@ -34,6 +37,7 @@ class Extrato {
       nome: map['nome'] as String,
       valor: map['valor'] as double,
       data: map['data'] as String,
+      diaSemana: map['diaSemana'] as String,
     );
   }
 

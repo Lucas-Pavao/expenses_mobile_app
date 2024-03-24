@@ -116,8 +116,10 @@ ThemeData get lighttheme => ThemeData(
 ThemeData get darktheme => ThemeData(
       useMaterial3: true,
       colorScheme: _darkColorScheme,
+      scaffoldBackgroundColor: _darkColorScheme.background,
       appBarTheme: AppBarTheme(
-        backgroundColor: _darkColorScheme.background,
+        // backgroundColor: _darkColorScheme.background,
+        color: _darkColorScheme.background,
         titleTextStyle: TextStyle(
             color: _darkColorScheme.primary,
             fontWeight: FontWeight.bold,
@@ -147,7 +149,7 @@ ThemeData get darktheme => ThemeData(
             ),
           ),
           textStyle: MaterialStateProperty.all<TextStyle>(
-            TextStyle(color: _darkColorScheme.secondaryContainer),
+            TextStyle(color: _darkColorScheme.primaryContainer),
           ),
           shape: MaterialStateProperty.all<OutlinedBorder>(
             RoundedRectangleBorder(
@@ -158,7 +160,7 @@ ThemeData get darktheme => ThemeData(
       ),
       inputDecorationTheme: InputDecorationTheme(
         labelStyle: TextStyle(color: _darkColorScheme.primary),
-        suffixIconColor: _darkColorScheme.secondaryContainer,
+        suffixIconColor: _darkColorScheme.primaryContainer,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(
@@ -195,7 +197,7 @@ ThemeData get darktheme => ThemeData(
             ),
           ),
           backgroundColor: MaterialStateProperty.all<Color>(
-            _darkColorScheme.onSecondary,
+            _darkColorScheme.onPrimary,
           ),
           iconSize: MaterialStateProperty.resolveWith<double?>(
             (states) {
@@ -216,7 +218,7 @@ ThemeData get darktheme => ThemeData(
         ),
       ),
       floatingActionButtonTheme: FloatingActionButtonThemeData(
-        backgroundColor: _darkColorScheme.secondaryContainer,
+        backgroundColor: _darkColorScheme.primaryContainer,
         foregroundColor: _darkColorScheme.primary,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(50),

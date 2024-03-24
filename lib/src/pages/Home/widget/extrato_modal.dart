@@ -223,6 +223,8 @@ class _ExtratoModalState extends State<ExtratoModal> {
                               valor: valor,
                               icon: icon,
                               iconColor: color,
+                              diaSemana:
+                                  DateFormat('EEEE').format(_selectedDate),
                             );
                             widget.onAdd!(extrato);
                             Navigator.pop(context);

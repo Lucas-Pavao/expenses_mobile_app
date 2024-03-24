@@ -36,6 +36,9 @@ class _EstatisticasState extends State<Estatisticas> {
             )),
         body: Column(
           children: [
+            const SizedBox(
+              height: 10,
+            ),
             Center(
               child: SegmentedButton(
                 segments: const [
@@ -59,12 +62,20 @@ class _EstatisticasState extends State<Estatisticas> {
             Expanded(
               child: PageView(
                 controller: pageController,
+                onPageChanged: (value) {
+                  setState(() {
+                    buttonSelected = value;
+                  });
+                },
                 children: [
                   SaldoDisponivelChart(
                       extratoLista: extratoLista,
                       saldoDisponivel: saldoDisponivel,
                       saldoInicial: saldoInicial),
-                  ExtratoMensalChart(),
+                  ExtratoMensalChart(
+                      extratoLista: extratoLista,
+                      saldoDisponivel: saldoDisponivel,
+                      saldoInicial: saldoInicial),
                   DespesaXLucroChart(
                       extratoLista: extratoLista,
                       saldoDisponivel: saldoDisponivel,
