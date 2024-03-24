@@ -1,16 +1,42 @@
 # expenses_mobile_app
 
-A new Flutter project.
+Este é um aplicativo móvel para controle de despesas desenvolvido em Flutter.
 
-## Getting Started
+## Instalação
 
-This project is a starting point for a Flutter application.
+Antes de começar, verifique se você possui o Flutter instalado em seu sistema. Se você não tiver o Flutter instalado, siga as [instruções de instalação do Flutter](https://flutter.dev/docs/get-started/install).
 
-A few resources to get you started if this is your first Flutter project:
+1. Clone este repositório para o seu ambiente local:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+    ```bash
+    git clone https://github.com/seu-usuario/exepenses_mobile_app.git
+    ```
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+2. Navegue até o diretório do projeto:
+
+    ```bash
+    cd exepenses_mobile_app
+    ```
+
+3. Instale as dependências do Flutter:
+
+    ```bash
+    flutter pub get
+    ```
+
+## Como Executar
+
+Para executar o aplicativo em um emulador ou dispositivo físico, siga estas etapas:
+
+1. Certifique-se de que um dispositivo Android ou iOS esteja conectado ao seu computador ou que um emulador esteja em execução.
+
+2. Execute o aplicativo com o comando:
+
+    ```bash
+    flutter run
+    ```
+
+## Capturas de Tela
+
+*Em breve*
+
